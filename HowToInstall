@@ -1,0 +1,19 @@
+COPYRIGHT (C) Justin James Clune 2013
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+
+
+How to Install
+
+dropPhoto is a website. Simply put index.html and all the folders in public_html.
+
+The main javascript is in the HTML5 file, but it also makes references to .js files 
+in the js folder. In the future it can be packaged it into a .js file to be 
+embedded in other mobile sites, but right now it requires the CSS style shit to
+display buttons etc. You must read the copyright (GNU Public License) before copying
+and redistributing dropPhoto. It is located in the file name COPYRIGHT and it can be
+viewed at <http://www.gnu.org/licenses/>. Thank you!
+
+
+Contact
+jclune.berkeley@gmail.com
