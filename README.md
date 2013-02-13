@@ -5,6 +5,8 @@ README
 
 Drag and Drop a photo, glamorize it with hearts, text, and even a mustache ;)
 
+DEMO: http://photodrop.net84.net/
+
 Code is based in javascript, HTML5, and CSS3, and optimized for iOS6 safari browser.
 PhotoDrop is inspired by Japanese "Puri Kura" style photo editing.
 Its interface fouses on the important features such as hearts, text, and accessories.
