@@ -28,12 +28,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 	    <header class="linearBackground">
 	    	<!-- logo container. #topLogo takes precedence over .logo in CSS -->
 	    	<div class="logo">
-            <h2 id="topLogo1">PhotoDrop</h2>
+            <h2 id="topLogo1">PhotoDrop by jclune</h2>
             </div>
             <!-- <h4 id="topLogo2">Decorate with friends</h4> -->
 	    	<!-- navigation container. #topNavList takes precedence over .navList -->
 	    </header>
-	    
+        
 	    <!-- The #main container with everything between the header and footer  -->
 	    <div id="main">
 	    	<!-- main picCanvas container -->
@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                 <div id="canvasButtons">
                 	<nav>
                         <ul class="buttonNavList">
-                            <li><button type="image" id="frame">
+                            <li><button type="image" id="frames">
                             </button></li>
                             <li><button type="image" id="glasses">
                             </button></li>
@@ -71,101 +71,134 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                   <button id="freeAmeba" class="textButton">
                     Free Ameba
                   </button>
-                </div> <!-- buttons for moving the ameba -->
-                    <!-- the kinetic javascript that allows touch events to work-->
-                    <script src="js/kinetic-v4.3.1-beta2.js">
-                    </script>
-                    <script>
-					/*Hide th url bar if mobile*/
+                </div>
+                
+                <!-- the kinetic javascript that allows touch events to work-->
+                <script src="js/kinetic-v4.3.1-beta2.js">
+                </script>
+                <script>
+					/*Hide the url bar if mobile*/
 					/mobile/i.test(navigator.userAgent) && setTimeout(function()
 					{   window.scrollTo(0, 1); }, 1000); 
-                    /* stage size and position within active pic canvas */
-                      var stage = new Kinetic.Stage({
-                        container: 'activePicCanvas',
-                        width: 309,
-                        height: 309,
-                      });
-                        /* all done on one layer */
-                      var layer = new Kinetic.Layer();
-                        /* draggable yellow and blue group locations */
-                      var yellowGroup = new Kinetic.Group({
-                        x: 50,
-                        y: 80,
-                        draggable: true
-                      });
-                      var blueGroup = new Kinetic.Group({
-                        x: 200,
-                        y: 80,
-                        draggable: true
-                      });
+					/* load multiple images froum "sources" at the end of the script */
+					function loadImages(sources, callback){
+						var images = {};
+						var loadedImages = 0;
+						var numImages = 0;
+						for (var src in sources) {
+							numImages++;
+						}
+						for (var src in sources) {
+							images[src] = new Image();
+							images[src].onload = function(){
+								if (++loadedImages >= numImages) {
+									callback(images);
+								}
+							};
+							images[src].src = sources[src];
+						}
+					}
+					function initStage(images) {
+						
+					/*initiate stage*/
+					var stage = new Kinetic.Stage({
+						container: 'activePicCanvas',
+						width: 309,
+						height: 309
+						});
+					var layer = new Kinetic.Layer();
+					/*ameba*/
+					var ameba = new Kinetic.Image({
+					  image: images.ameba,
+					  x: 0,
+					  y: 0,
+					  width: 50,
+					  height: 50,
+					});
+					var frames = new Kinetic.Image({
+					  image: images.frames,
+					  x: 0,
+					  y: 0,
+					  width: 50,
+					  height: 50,
+					});
+
+						/* draggable yellow and blue group locations */
+					  var yellowGroup = new Kinetic.Group({
+						x: 50,
+						y: 80,
+						draggable: true
+					  });
+					  var blueGroup = new Kinetic.Group({
+						x: 200,
+						y: 80,
+						draggable: true
+					  });
 					  var amebaGroup = new Kinetic.Group({
 						x: 115,
 						y: 130,
 						draggable: true
 					  });
-                      /* blue circle > yellow circle > red box */
-                      var box = new Kinetic.Rect({
-                        x: 20,
-                        y: 20,
-                        width: 30,
-                        height: 30,
-                        fill: 'red',
-                        stroke: 'black'
-                      });
-                      var yellowCircle = new Kinetic.Circle({
-                        x: 00,
-                        y: 00,
-                        radius: 20,
-                        fill: 'yellow',
-                        stroke: 'black'
-                      });
-                      var blueCircle = new Kinetic.Circle({
-                        x: 0,
-                        y: 0,
-                        radius: 20,
-                        fill: 'blue',
-                        stroke: 'black'
-                      });
-					  var ameba = new Kinetic.Image({
-						  x:0,
-						  y:0,
-						  width:50,
-						  height: 50,
+					  /* blue circle > yellow circle > red box */
+					  var box = new Kinetic.Rect({
+						x: 20,
+						y: 20,
+						width: 30,
+						height: 30,
+						fill: 'red',
+						stroke: 'black'
 					  });
-                      var imageObj = new Image();
-					  imageObj.src = 'pics/stickers/ameba.gif';
-					  imageObj.onload = function() {
-						  ameba.setImage(imageObj);
-						  layer.draw();
-					  }
-                      /* build node tree (add shapes to groups) */
-                      yellowGroup.add(yellowCircle);
+					  var yellowCircle = new Kinetic.Circle({
+						x: 00,
+						y: 00,
+						radius: 20,
+						fill: 'yellow',
+						stroke: 'black'
+					  });
+					  var blueCircle = new Kinetic.Circle({
+						x: 0,
+						y: 0,
+						radius: 20,
+						fill: 'blue',
+						stroke: 'black'
+					  });
+					  
+					  /* build node tree (add shapes to groups) */
+					  yellowGroup.add(yellowCircle);
 					  yellowGroup.add(ameba);
-                      blueGroup.add(blueCircle);
+					  blueGroup.add(blueCircle);
+					  blueGroup.add(frames);
 					  layer.add(yellowGroup);
-                      layer.add(blueGroup);
+					  layer.add(blueGroup);
 					  layer.add(amebaGroup);
-                      stage.add(layer);
+					  stage.add(layer);
 					  layer.draw();
-                 
-                      /* toBlue button event binded to move group by "box.moveTo" function  */
-                      document.getElementById('toBlue').addEventListener('click', function() {
-                        ameba.moveTo(blueGroup);
-                        layer.draw();
-                      }, false);
-                      /* toYellow button event binded to move group by "box.moveTo" function  */
-                      document.getElementById('toYellow').addEventListener('click', function() {
-                        ameba.moveTo(yellowGroup);
-                        layer.draw();
-                      }, false);
+					  
+					  /* toBlue button event binded to move group by "box.moveTo" function  */
+					  document.getElementById('toBlue').addEventListener('click', function() {
+						ameba.moveTo(blueGroup);
+						layer.draw();
+					  }, false);
+					  /* toYellow button event binded to move group by "box.moveTo" function  */
+					  document.getElementById('toYellow').addEventListener('click', function() {
+						ameba.moveTo(yellowGroup);
+						layer.draw();
+					  }, false);
 					  document.getElementById('freeAmeba').addEventListener('click',function() {
 						ameba.moveTo(amebaGroup);
 						layer.draw();
 					  }, false);
+					}
+
+						var sources = {
+						ameba: 'pics/stickers/ameba.gif',
+						frames: 'pics/frames/frame00.png',
+						};
+					
+					loadImages(sources, initStage);
                     </script>
             </div> <!-- pic canvas-->
             
-                      
             <!-- content container with style examples -->
 		    <div id="content">
 	            <h1><u>Style Examples:</u></h1>

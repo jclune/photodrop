@@ -170,14 +170,14 @@ button {
 		float: left;
 }
 .textButton {
-		width: 100px;
-		height: 25px;
-        margin-left: 2px;
+		width: 95px;
+		height: 50px;
+        margin-left: 5px;
 		margin-bottom: 5px;
 }
 /* frame button*/
 
-#frame {
+#frames {
 	background-image:url(../pics/buttons/frameOff.jpg);
 }
 #glasses {
@@ -192,7 +192,7 @@ button {
 #share {
 	background-image:url(../pics/buttons/shareOff.jpg);
 }
-#frame, #glasses, #emoji, #textOff, #share{
+#frames, #glasses, #emoji, #textOff, #share{
 	background-size: 62px 62px;
 	border: none;
 	border-radius: 3px;
