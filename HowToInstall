@@ -5,7 +5,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 How to Install
 
-dropPhoto is a website. Simply put index.html and all the folders in public_html.
+dropPhoto is a website. http://photodrop.net84.net/
+
+Simply put index.html and all the folders in public_html of a website, dreamweaver, etc.
+Test your addition, add it to the git, I will actively update photodrop.net84.net
+
 
 The main javascript is in the HTML5 file, but it also makes references to .js files 
 in the js folder. In the future it can be packaged it into a .js file to be 
