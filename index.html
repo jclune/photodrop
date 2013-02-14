@@ -44,13 +44,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                         <ul class="buttonNavList">
                             <li><button type="image" id="frames" value="off">
                             </button></li>
-                            <li><button type="image" id="glasses">
+                            <li><button type="image" id="glasses" value="off">
                             </button></li>
-                            <li><button type="image" id="emoji">
+                            <li><button type="image" id="emoji" value="off">
                             </button></li>
-                            <li><button type="image" id="textOff">
+                            <li><button type="image" id="textOff" value="off">
                             </button></li>
-                            <li><button type="image" id="share">
+                            <li><button type="image" id="share" value="off">
                             </button></li>
                         </ul>
                     </nav>
@@ -170,6 +170,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  width: 50,
 					  height: 50,
 					});
+					var mustache = new Kinetic.Image({
+					  image: images.mustache,
+					  x: 0,
+					  y: 0,
+					  width: 50,
+					  height: 50,
+					});
+					var mustacheOwl = new Kinetic.Image({
+					  image: images.mustacheOwl,
+					  x: 0,
+					  y: 0,
+					  width: 70,
+					  height: 70,
+					});
+					var valentine = new Kinetic.Image({
+					  image: images.valentine,
+					  x: 0,
+					  y: 0,
+					  width: 100,
+					  height: 100,
+					});
 					var framesPic = new Kinetic.Image({
 					  image: images.frames,
 					  x: 0,
@@ -191,6 +212,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  });
 					  var amebaGroup = new Kinetic.Group({
 						x: 115,
+						y: 70,
+						draggable: true
+					  });
+					  var glassesGroup = new Kinetic.Group({
+						x: 50,
+						y: 130,
+						draggable: true
+					  });
+					  var emojiGroup = new Kinetic.Group({
+						x: 80,
+						y: 130,
+						draggable: true
+					  });
+					  var textGroup = new Kinetic.Group({
+						x: 150,
 						y: 130,
 						draggable: true
 					  });
@@ -230,13 +266,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  });
 					  
 					  /* build node tree (add shapes to groups) */
-					  yellowGroup.add(yellowCircle);
-					  yellowGroup.add(ameba);
-					  blueGroup.add(blueCircle);
+
 					  
 					  layer.add(framesGroup);
 					  layer.add(yellowGroup);
 					  layer.add(blueGroup);
+					  layer.add(glassesGroup);
+					  layer.add(emojiGroup);
+					  layer.add(textGroup);
 					  layer.add(amebaGroup);
 					  hiddenLayer.add(hiddenGroup);
 					  
@@ -244,21 +281,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  hiddenGroup.hide();
 					  stage.add(layer);
 					  layer.draw();
-					  
-					  /* toBlue button event binded to move group by "box.moveTo" function  */
-					  document.getElementById('glasses').addEventListener('click', function() {
-						ameba.moveTo(blueGroup);
-						layer.draw();
-					  }, false);
-					  /* toYellow button event binded to move group by "box.moveTo" function  */
-					  document.getElementById('emoji').addEventListener('click', function() {
-						ameba.moveTo(yellowGroup);
-						layer.draw();
-					  }, false);
-					  document.getElementById('textOff').addEventListener('click',function() {
-						ameba.moveTo(amebaGroup);
-						layer.draw();
-					  }, false);
+					  					  
 					  document.getElementById('frames').addEventListener('click',function(frames) {
 						/*framesPic.moveTo(framesGroup);
 						layer.draw();*/
@@ -274,6 +297,72 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 							layer.draw();
 					  	}
 					  }, false);
+					  document.getElementById('glasses').addEventListener('click',function(glasses) {
+						/*framesPic.moveTo(framesGroup);
+						layer.draw();*/
+						
+						if (document.getElementById('glasses').value == "on"){
+							document.getElementById('glasses').value = "off";
+							mustache.moveTo(hiddenGroup);
+							layer.draw();
+					  	}
+						else {
+							document.getElementById('glasses').value = "on";
+							mustache.moveTo(glassesGroup);
+							layer.draw();
+					  	}
+					  }, false);
+					  document.getElementById('emoji').addEventListener('click',function(emoji) {
+						/*framesPic.moveTo(framesGroup);
+						layer.draw();*/
+						
+						if (document.getElementById('emoji').value == "on"){
+							document.getElementById('emoji').value = "off";
+							ameba.moveTo(hiddenGroup);
+							mustacheOwl.moveTo(hiddenGroup);
+							layer.draw();
+					  	}
+						else {
+							document.getElementById('emoji').value = "on";
+							ameba.moveTo(amebaGroup);
+							mustacheOwl.moveTo(emojiGroup);
+							layer.draw();
+					  	}
+					  }, false);
+					  document.getElementById('textOff').addEventListener('click',function(textOff) {
+						/*framesPic.moveTo(framesGroup);
+						layer.draw();*/
+						
+						if (document.getElementById('textOff').value == "on"){
+							document.getElementById('textOff').value = "off";
+							valentine.moveTo(hiddenGroup);
+							layer.draw();
+					  	}
+						else {
+							document.getElementById('textOff').value = "on";
+							valentine.moveTo(textGroup);
+							layer.draw();
+					  	}
+					  }, false);
+					 
+					  document.getElementById('share').addEventListener('click',function(share) {
+						/*framesPic.moveTo(framesGroup);
+						layer.draw();*/
+						
+						if (document.getElementById('share').value == "on"){
+							document.getElementById('share').value = "off";
+							yellowCircle.moveTo(hiddenGroup);
+							blueCircle.moveTo(hiddenGroup);
+							layer.draw();
+					  	}
+						else {
+							document.getElementById('share').value = "on";
+							yellowCircle.moveTo(yellowGroup);
+							blueCircle.moveTo(blueGroup);
+							layer.draw();
+					  	}
+					  }, false);
+					  
 					}
 	
 					/*global avriables */
@@ -281,6 +370,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					var sources = {
 					ameba: 'pics/stickers/ameba.gif',
 					frames: 'pics/frames/frame00.png',
+					mustache: 'pics/stickers/mustache.png',
+					valentine: 'pics/stickers/valentine.png',
+					mustacheOwl: 'pics/stickers/mustacheOwl.png',
 					};
 				
 					loadImages(sources, initStage);
