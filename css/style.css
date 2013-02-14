@@ -88,6 +88,12 @@ img{
 
 .staticImage{}
 a.linkImage{}
+/* uploaded photo thumbnails*/
+.thumb{
+	height: 78px;
+	border: 1px solid #000;
+	margin: 0px 4px 8px 4px;
+}
 
 /* Underline links and Hover/visted color for links */
 a.internalLink:link, a.externalLink:link{
@@ -338,8 +344,8 @@ ul.bottomNavList li:before{
 	-moz-border-radius: 6px;
 	-webkit-border: 6px;
 	box-shadow: 1px 1px 1px #888888;
-	background-color: #FFF;
-	padding: 0px;
+	background-color: transparent;
+	padding: 0 0 20px 0;
 	margin: 0px;
 }
 /* active canvas is white without a boarder */
@@ -348,7 +354,32 @@ ul.bottomNavList li:before{
 	height: 300px;
 	border: none;
 	position: relative;
-	background-color: #FFF;
+	background-color: transparent;
+	padding: 0px;
+	margin: 0px;
+	z-index: 2;
+}
+.activeBackground{
+	width: 309px;
+	height: 310px;
+	position: relative;
+	border: none;
 	padding: 0px;
 	margin: 0px;
 }
+.thumb{
+	height: 78px;
+	border: 1px solid #000;
+	margin: 0px 4px 8px 4px;
+}
+
+#galleryBox{
+	width: 289px;
+	border: none;
+	position: relative;
+	background-color: #FFF;
+	padding: 0 10 30 10;
+	margin: 0;
+	display: inline-block;
+}
+

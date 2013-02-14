@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                 <div id="canvasButtons">
                 	<nav>
                         <ul class="buttonNavList">
-                            <li><button type="image" id="frames">
+                            <li><button type="image" id="frames" value="off">
                             </button></li>
                             <li><button type="image" id="glasses">
                             </button></li>
@@ -59,20 +59,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                 </div>
                 <!-- active pic canvas container for the stage (where the magic happens)-->
                 <div id="activePicCanvas">
-                </div>	<!-- active pic canvas -->
-                <!-- buttons for moving the ameba -->
-                <div style="margin-top: 10px;" class="clearFloat">
-                  <button id="toBlue" class="textButton">
-                    move to blue
-                  </button>
-                  <button id="toYellow" class="textButton">
-                    move to yellow
-                  </button>
-                  <button id="freeAmeba" class="textButton">
-                    Free Ameba
-                  </button>
                 </div>
-                
+                <!-- uploaded photo gallery and input for pic uploads -->
+                <div id ="galleryBox" class="center">
+                    <div>
+                    <output id="list"></output>
+                    </div>
+                </div>
+                <input type="file" id="files" name="files[]" multiple />				
+               			
                 <!-- the kinetic javascript that allows touch events to work-->
                 <script src="js/kinetic-v4.3.1-beta2.js">
                 </script>
@@ -80,6 +75,63 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					/*Hide the url bar if mobile*/
 					/mobile/i.test(navigator.userAgent) && setTimeout(function()
 					{   window.scrollTo(0, 1); }, 1000); 
+					
+					 <!--script to load multiple photo thubnails but input is only for one
+					 <!-- have to choose beteen  -->	
+					// Check for the various File API support.
+					if (window.File && window.FileReader && window.FileList && window.Blob) {
+					// Great success! All the File APIs are supported.
+					} else {
+					alert('The File APIs are not fully supported in this browser.');
+					}
+					function handleFileSelect(evt) {
+					var files = evt.target.files; // FileList object
+				
+					// Loop through the FileList and render image files as thumbnails.
+					for (var i = 0, f; f = files[i]; i++) {
+				
+					  // Only process image files.
+					  if (!f.type.match('image.*')) {
+						continue;
+					  }
+				
+					  var reader = new FileReader();
+				
+					  // Closure to capture the file information.
+					  reader.onload = (function(theFile) {
+						return function(e) {
+							//Render canvas Background for 1st picture.
+							if (files.length == 1){
+							  var span = document.createElement('span');
+							  span.innerHTML = ['<img class="activeBackground" src="', e.target.result,
+												'" title="', escape(theFile.name), '"/>'].join('');
+							  document.getElementById('listBack').insertBefore(span, null);
+							  //var backgroundImg = new Image({
+								//src: e.target.result,
+								//width: 309,
+								//height: 309
+							  //});
+							 // yellowGroup.add(backgroundImg);
+							 // layer.draw();
+							}
+							else {
+							  // Render thumbnail.
+							  var span = document.createElement('span');
+							  span.innerHTML = ['<img class="thumb" src="', e.target.result,
+												'" title="', escape(theFile.name), '"/>'].join('');
+							  document.getElementById('list').insertBefore(span, null);
+							}
+						};
+					  })(f);
+					  // Read in the image file as a data URL.
+					  reader.readAsDataURL(f);
+					}
+				  }
+
+				  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+				
+	
+
 					/* load multiple images froum "sources" at the end of the script */
 					function loadImages(sources, callback){
 						var images = {};
@@ -103,10 +155,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					/*initiate stage*/
 					var stage = new Kinetic.Stage({
 						container: 'activePicCanvas',
+						x: 0,
+						y: 0,
 						width: 309,
 						height: 309
 						});
 					var layer = new Kinetic.Layer();
+					var hiddenLayer = new Kinetic.Layer();
 					/*ameba*/
 					var ameba = new Kinetic.Image({
 					  image: images.ameba,
@@ -115,12 +170,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  width: 50,
 					  height: 50,
 					});
-					var frames = new Kinetic.Image({
+					var framesPic = new Kinetic.Image({
 					  image: images.frames,
 					  x: 0,
 					  y: 0,
-					  width: 50,
-					  height: 50,
+					  width: 309,
+					  height: 309,
 					});
 
 						/* draggable yellow and blue group locations */
@@ -139,6 +194,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						y: 130,
 						draggable: true
 					  });
+					  var framesGroup = new Kinetic.Group({
+						  x: 0,
+						  y: 0,
+					  });
+					  var hiddenGroup = new Kinetic.Group({
+						  x: 0,
+						  y: 0,
+					  });
+					  
+					  
+					  
 					  /* blue circle > yellow circle > red box */
 					  var box = new Kinetic.Rect({
 						x: 20,
@@ -167,34 +233,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  yellowGroup.add(yellowCircle);
 					  yellowGroup.add(ameba);
 					  blueGroup.add(blueCircle);
-					  blueGroup.add(frames);
+					  
+					  layer.add(framesGroup);
 					  layer.add(yellowGroup);
 					  layer.add(blueGroup);
 					  layer.add(amebaGroup);
+					  hiddenLayer.add(hiddenGroup);
+					  
+					  stage.add(hiddenLayer);
+					  hiddenGroup.hide();
 					  stage.add(layer);
 					  layer.draw();
 					  
 					  /* toBlue button event binded to move group by "box.moveTo" function  */
-					  document.getElementById('toBlue').addEventListener('click', function() {
+					  document.getElementById('glasses').addEventListener('click', function() {
 						ameba.moveTo(blueGroup);
 						layer.draw();
 					  }, false);
 					  /* toYellow button event binded to move group by "box.moveTo" function  */
-					  document.getElementById('toYellow').addEventListener('click', function() {
+					  document.getElementById('emoji').addEventListener('click', function() {
 						ameba.moveTo(yellowGroup);
 						layer.draw();
 					  }, false);
-					  document.getElementById('freeAmeba').addEventListener('click',function() {
+					  document.getElementById('textOff').addEventListener('click',function() {
 						ameba.moveTo(amebaGroup);
 						layer.draw();
 					  }, false);
+					  document.getElementById('frames').addEventListener('click',function(frames) {
+						/*framesPic.moveTo(framesGroup);
+						layer.draw();*/
+						
+						if (document.getElementById('frames').value == "on"){
+							document.getElementById('frames').value = "off";
+							framesPic.moveTo(hiddenGroup);
+							layer.draw();
+					  	}
+						else {
+							document.getElementById('frames').value = "on";
+							framesPic.moveTo(framesGroup);
+							layer.draw();
+					  	}
+					  }, false);
 					}
-
-						var sources = {
-						ameba: 'pics/stickers/ameba.gif',
-						frames: 'pics/frames/frame00.png',
-						};
-					
+	
+					/*global avriables */
+					framesToggle = 0; //no frame added to frameGroup
+					var sources = {
+					ameba: 'pics/stickers/ameba.gif',
+					frames: 'pics/frames/frame00.png',
+					};
+				
 					loadImages(sources, initStage);
                     </script>
             </div> <!-- pic canvas-->
@@ -234,9 +322,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 	                <li>list item 3</li>
 	            </ol>
 	    	</div> <!-- content -->	 
-            <br>   	
+            <br>
+            <div style="position: absolute;top: 68px;">   
+            <div class="activeBackground">
+            <output id="listBack" ></output>
+            </div>
+            </div>    	
 		</div> <!-- main -->
-            
 		<footer class="linearBackground">
 	    	<nav>
 	    		<ul class="bottomNavList">
