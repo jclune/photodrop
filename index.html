@@ -28,7 +28,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 	    <header class="linearBackground">
 	    	<!-- logo container. #topLogo takes precedence over .logo in CSS -->
 	    	<div class="logo">
-            <h2 id="topLogo1">PhotoDrop by jclune</h2>
+            <h2 id="topLogo1">PhotoUp</h2> 
+            <input type="file" id="files" name="files[]" multiple />
+
+            <!--<input type="file" id="files" name="files[]" accept="image/*" /> -->
             </div>
             <!-- <h4 id="topLogo2">Decorate with friends</h4> -->
 	    	<!-- navigation container. #topNavList takes precedence over .navList -->
@@ -42,15 +45,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                 <div id="canvasButtons">
                 	<nav>
                         <ul class="buttonNavList">
-                            <li><button type="image" id="frames" value="off">
+                        	<li><button type="image" id="share" value="off">
                             </button></li>
-                            <li><button type="image" id="glasses" value="off">
+                            <li><button type="image" id="frames" value="off">
                             </button></li>
                             <li><button type="image" id="emoji" value="off">
                             </button></li>
                             <li><button type="image" id="textOff" value="off">
                             </button></li>
-                            <li><button type="image" id="share" value="off">
+                            <li><button type="image" id="glasses" value="off">
                             </button></li>
                         </ul>
                     </nav>
@@ -65,8 +68,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                     <div>
                     <output id="list"></output>
                     </div>
-                </div>
-                <input type="file" id="files" name="files[]" multiple />				
+                </div>			
                			
                 <!-- the kinetic javascript that allows touch events to work-->
                 <script src="js/kinetic-v4.3.1-beta2.js">
@@ -85,52 +87,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					alert('The File APIs are not fully supported in this browser.');
 					}
 					function handleFileSelect(evt) {
-					var files = evt.target.files; // FileList object
-				
-					// Loop through the FileList and render image files as thumbnails.
-					for (var i = 0, f; f = files[i]; i++) {
-				
-					  // Only process image files.
-					  if (!f.type.match('image.*')) {
-						continue;
-					  }
-				
-					  var reader = new FileReader();
-				
-					  // Closure to capture the file information.
-					  reader.onload = (function(theFile) {
-						return function(e) {
-							//Render canvas Background for 1st picture.
-							if (files.length == 1){
-							  var span = document.createElement('span');
-							  span.innerHTML = ['<img class="activeBackground" src="', e.target.result,
-												'" title="', escape(theFile.name), '"/>'].join('');
-							  document.getElementById('listBack').insertBefore(span, null);
-							  //var backgroundImg = new Image({
-								//src: e.target.result,
-								//width: 309,
-								//height: 309
-							  //});
-							 // yellowGroup.add(backgroundImg);
-							 // layer.draw();
+						var files = evt.target.files; // FileList object
+						
+						// Loop through the FileList and render image files as thumbnails.
+						for (var i = 0, f; f = files[i]; i++) {
+							
+							// Only process image files.
+							if (!f.type.match('image.*')) {
+								continue;
 							}
-							else {
-							  // Render thumbnail.
-							  var span = document.createElement('span');
-							  span.innerHTML = ['<img class="thumb" src="', e.target.result,
-												'" title="', escape(theFile.name), '"/>'].join('');
-							  document.getElementById('list').insertBefore(span, null);
-							}
-						};
-					  })(f);
-					  // Read in the image file as a data URL.
-					  reader.readAsDataURL(f);
+							
+							var reader = new FileReader();
+							
+							// Closure to capture the file information.
+							reader.onload = (function(theFile) {
+								return function(e) {
+									//Render canvas Background for 1st picture.
+									if (files.length == 1){
+										var span = document.createElement('span');
+										span.innerHTML = ['<img class="activeBackground" src="', 
+										e.target.result,
+										'" title="', escape(theFile.name), '"/>'].join('');
+										document.getElementById('listBack').insertBefore(span, null);
+										//var backgroundImg = new Image({
+										//src: e.target.result,
+										//width: 309,
+										//height: 309
+										//});
+										// yellowGroup.add(backgroundImg);
+										// layer.draw();
+									}
+									else {
+										// Render thumbnail.
+										var span = document.createElement('span');
+										span.innerHTML = ['<img class="thumb" src="', e.target.result,
+										'" title="', escape(theFile.name), '"/>'].join('');
+										document.getElementById('list').insertBefore(span, null);
+									}
+								};
+							})(f);
+						// Read in the image file as a data URL.
+						reader.readAsDataURL(f);
+						}
 					}
-				  }
-
-				  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-				
-	
+					document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 					/* load multiple images froum "sources" at the end of the script */
 					function loadImages(sources, callback){
@@ -158,7 +158,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						x: 0,
 						y: 0,
 						width: 309,
-						height: 309
+						height: 330
 						});
 					var layer = new Kinetic.Layer();
 					var hiddenLayer = new Kinetic.Layer();
@@ -196,7 +196,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 					  x: 0,
 					  y: 0,
 					  width: 309,
-					  height: 309,
+					  height: 330,
 					});
 
 						/* draggable yellow and blue group locations */
@@ -381,40 +381,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
             
             <!-- content container with style examples -->
 		    <div id="content">
-	            <h1><u>Style Examples:</u></h1>
-                <h1>header 1</h1>
-	            <h2>header 2</h2>
-	            <h3>header 3</h3>
-	            <h4>header 4</h4>
-	            <h5>header 5</h5>
-	            <h6>header 6</h6>
-	            <p>This is what a paragraph looks like</p>
-                <br>
-	            <img class="staticImage" src="pics/buttons/glassesOff.jpg" width="60" height="60">
-                A static image</img>
-                <br>
-                <a href="http://google.com"> <img class="linkImage" src="pics/buttons/upload.jpg" 
-                width="65" height="60">An image link</a>
-                <br>
-                <br>
-	            <a class="externalLink" href="http://google.com">External Link to Google</a>
-                <br>
-                <br>
-	            <p>An unordered list</p>
-	            <ul>
-	                <li>list item 1</li>
-	                <li>list item 3</li>
-	                <li>list item 2</li>
-	            </ul>
-                <br>
-	            <p>An ordered list</p>
-	            <ol>
-	            	<li>list item 1</li>
-	                <li>list item 2</li>
-	                <li>list item 3</li>
-	            </ol>
+            	<a href="style.html">CSS Style examples</a>
 	    	</div> <!-- content -->	 
-            <br>
             <div style="position: absolute;top: 68px;">   
             <div class="activeBackground">
             <output id="listBack" ></output>

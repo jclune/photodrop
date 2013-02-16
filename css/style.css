@@ -213,12 +213,11 @@ button {
 /* make linear gradient navigation bars */
 header, footer{
 	width: 308px;
-	height: 40px;
 	border:1px solid #D0D0D0;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border: 4px;
-	padding: 0px;
+	padding: 0;
 	position: relative;
 	right: 1px;
 	z-index: 1;
@@ -244,9 +243,11 @@ footer{
 }
 /* topLogo or bottomLogo overrides logo class and is aligned left by float*/
 #topLogo1{
-	padding-left: 10px;
-	width: 110px;
+	padding-left: 3px;
 	margin-top:0px;
+	display: inline-block;
+	vertical-align: top;
+	font: normal 180% "Yanone Kaffeesatz", arial, sans-serif;
 }
 #topLogo2{
 	width: 180px;
@@ -345,13 +346,13 @@ ul.bottomNavList li:before{
 	-webkit-border: 6px;
 	box-shadow: 1px 1px 1px #888888;
 	background-color: transparent;
-	padding: 0 0 20px 0;
+	padding: 0 0 0px 0;
 	margin: 0px;
 }
 /* active canvas is white without a boarder */
 #activePicCanvas{
 	width: 309px;
-	height: 300px;
+	height: 330px;
 	border: none;
 	position: relative;
 	background-color: transparent;
@@ -361,7 +362,7 @@ ul.bottomNavList li:before{
 }
 .activeBackground{
 	width: 309px;
-	height: 310px;
+	height: 330px;
 	position: relative;
 	border: none;
 	padding: 0px;
@@ -370,7 +371,10 @@ ul.bottomNavList li:before{
 .thumb{
 	height: 78px;
 	border: 1px solid #000;
-	margin: 0px 4px 8px 4px;
+	margin: 0px 5px 8px 5px;
+}
+#files{
+	margin: 10px 0 0 0;
 }
 
 #galleryBox{
@@ -378,7 +382,7 @@ ul.bottomNavList li:before{
 	border: none;
 	position: relative;
 	background-color: #FFF;
-	padding: 0 10 30 10;
+	padding: 0 10 5 10;
 	margin: 0;
 	display: inline-block;
 }

@@ -1,0 +1,96 @@
+<!-- COPYRIGHT (C) Justin James Clune 2013
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/> -->
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Justin Clune's PhotoDrop 2013</title>
+        <meta name="description" content="about website" />
+        <meta name="keywords" content="keywords" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="user-scalable=0, initial-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!--  load default CSS style -->
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <!--  load ipad style for 768-1024 width range
+        <link rel="stylesheet" type="text/css" media="and only and 
+        (min-device-width=768) and (max-device-width=1024)" href="css/ipadStyle.css" />
+    	 <-- load phone style for 320-568 width range
+    	<link rel="stylesheet" type="text/css" media="and only and
+    	(min-device-width=320) and (max-device-width=568)" href="css/phoneStyle.css" /> -->
+    	<script type="text/javascript" src="js/modernizr-1.5.min.js">
+	
+        </script>
+        <script type="text/javascript">
+       	/*Hide the url bar if mobile*/
+		/mobile/i.test(navigator.userAgent) && setTimeout(function()
+		{   window.scrollTo(0, 1); }, 1000); 
+		</script>
+    </head>    
+    <body class="linearBackground">
+	    <header class="linearBackground">
+	    	<!-- logo container. #topLogo takes precedence over .logo in CSS -->
+	    	<div class="logo">
+            <h2 id="topLogo1">Photo</h2>
+            <input type="file" id="files" name="files[]" accept />	
+            </div>
+            <!-- <h4 id="topLogo2">Decorate with friends</h4> -->
+	    	<!-- navigation container. #topNavList takes precedence over .navList -->
+	    </header>
+        
+	    <!-- The #main container with everything between the header and footer  -->
+	    <div id="main">        
+            <!-- content container with style examples -->
+		    <div id="content">
+	            <h1><u>Style Examples:</u></h1>
+                <h1>header 1</h1>
+	            <h2>header 2</h2>
+	            <h3>header 3</h3>
+	            <h4>header 4</h4>
+	            <h5>header 5</h5>
+	            <h6>header 6</h6>
+	            <p>This is what a paragraph looks like</p>
+                <br>
+	            <img class="staticImage" src="pics/buttons/glassesOff.jpg" width="60" height="60">
+                A static image</img>
+                <br>
+                <a href="http://google.com"> <img class="linkImage" src="pics/buttons/upload.jpg" 
+                width="65" height="60">An image link</a>
+                <br>
+                <br>
+	            <a class="externalLink" href="http://google.com">External Link to Google</a>
+                <br>
+                <br>
+	            <p>An unordered list</p>
+	            <ul>
+	                <li>list item 1</li>
+	                <li>list item 3</li>
+	                <li>list item 2</li>
+	            </ul>
+                <br>
+	            <p>An ordered list</p>
+	            <ol>
+	            	<li>list item 1</li>
+	                <li>list item 2</li>
+	                <li>list item 3</li>
+	            </ol>
+	    	</div> <!-- content -->	 
+            <br>
+            <div style="position: absolute;top: 68px;">   
+            <div class="activeBackground">
+            <output id="listBack" ></output>
+            </div>
+            </div>    	
+		</div> <!-- main -->
+		<footer class="linearBackground">
+	    	<nav>
+	    		<ul class="bottomNavList">
+	    			<li>upload</li>
+	    			<li>decorate</li>
+	    			<li>share</li>
+	    		</ul>
+	    	</nav>
+	    </footer>
+    </body>
+</html>
