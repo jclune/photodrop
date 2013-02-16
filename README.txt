@@ -3,13 +3,12 @@ photoDrop Copyright (C) 2013 Justin James Clune
 
 README
 
-Drag and Drop a photo, glamorize it with hearts, text, and even a mustache ;)
+Upload a photo, glamorize it with hearts, text, and even a mustache ;)
 
-DEMO: http://photodrop.net84.net/
+DEMO: server down.
 
 Code is based in javascript, HTML5, and CSS3, and optimized for iOS6 safari browser.
-PhotoDrop is inspired by Japanese "Puri Kura" style photo editing.
-Its interface fouses on the important features such as hearts, text, and accessories.
+PhotoUp is inspired by UK style photo booth and Japanese "Puri Kura". The code is pretty messy because I'm a beginner in Javascript. And obviously we need an artist!
 
 
 This program is free software: you can redistribute it and/or modify

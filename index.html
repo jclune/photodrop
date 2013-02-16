@@ -45,8 +45,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                 <div id="canvasButtons">
                 	<nav>
                         <ul class="buttonNavList">
-                        	<li><button type="image" id="share" value="off">
-                            </button></li>
                             <li><button type="image" id="frames" value="off">
                             </button></li>
                             <li><button type="image" id="emoji" value="off">
@@ -54,6 +52,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                             <li><button type="image" id="textOff" value="off">
                             </button></li>
                             <li><button type="image" id="glasses" value="off">
+                            </button></li>
+                            <li><button type="image" id="share" value="off">
                             </button></li>
                         </ul>
                     </nav>
@@ -73,11 +73,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
                 <!-- the kinetic javascript that allows touch events to work-->
                 <script src="js/kinetic-v4.3.1-beta2.js">
                 </script>
-                <script>
+                <script type="text/javascript">
 					/*Hide the url bar if mobile*/
 					/mobile/i.test(navigator.userAgent) && setTimeout(function()
 					{   window.scrollTo(0, 1); }, 1000); 
 					
+					
+					
+<!-- -------------------------------------------------------------------------------------------- 
+<!-- Below is a modified veriosn of copyrighted code 
+<!-- Copyright 2010 [Eric Bidelman] Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. -->	
+				
 					 <!--script to load multiple photo thubnails but input is only for one
 					 <!-- have to choose beteen  -->	
 					// Check for the various File API support.
@@ -109,13 +115,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 										e.target.result,
 										'" title="', escape(theFile.name), '"/>'].join('');
 										document.getElementById('listBack').insertBefore(span, null);
-										//var backgroundImg = new Image({
-										//src: e.target.result,
-										//width: 309,
-										//height: 309
-										//});
-										// yellowGroup.add(backgroundImg);
-										// layer.draw();
 									}
 									else {
 										// Render thumbnail.
@@ -131,10 +130,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						}
 					}
 					document.getElementById('files').addEventListener('change', handleFileSelect, false);
+/*-------------------------------------------------------------------------------------
+Above is a modified version of copyrighted code 
+<!-- Copyright 2010 [Eric Bidelman] Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. -->	
+*/
 
 					/* load multiple images froum "sources" at the end of the script */
 					function loadImages(sources, callback){
 						var images = {};
+						var Kimages = {};
 						var loadedImages = 0;
 						var numImages = 0;
 						for (var src in sources) {
@@ -142,15 +146,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						}
 						for (var src in sources) {
 							images[src] = new Image();
+							// check if the image loaded is a frame
+							var n = src.match(/frames/gi);
+							var m = src.match(/emojiByOcal/gi);
+							if (n == "frames"){
+								// define the size differently for frames
+								Kimages[src] = new Kinetic.Image({
+									image: images[src],
+									x:0,
+									y:0,
+									width:309,
+									height:330
+								});
+							}
+							else { 
+							if (m == "emojiByOcal"){
+								// define the size differently for frames
+								Kimages[src] = new Kinetic.Image({
+									image: images[src],
+									x:0,
+									y:0,
+									width:270,
+									height:290
+								});
+							}
+							else {
+								var randomX = Math.floor(Math.random()*210);
+								var randomY = Math.floor(Math.random()*230);
+								Kimages[src] = new Kinetic.Image({
+									image: images[src],
+									x: randomX,
+									y: randomY,
+									width: 70,
+									height: 50,
+									draggable: true
+								});
+							}
+							}
+							images[src].src = sources[src];
 							images[src].onload = function(){
 								if (++loadedImages >= numImages) {
-									callback(images);
+									callback(images,Kimages);
 								}
 							};
-							images[src].src = sources[src];
 						}
 					}
-					function initStage(images) {
+					function initStage(images, Kimages) {
 						
 					/*initiate stage*/
 					var stage = new Kinetic.Stage({
@@ -162,119 +203,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						});
 					var layer = new Kinetic.Layer();
 					var hiddenLayer = new Kinetic.Layer();
-					/*ameba*/
-					var ameba = new Kinetic.Image({
-					  image: images.ameba,
-					  x: 0,
-					  y: 0,
-					  width: 50,
-					  height: 50,
-					});
-					var mustache = new Kinetic.Image({
-					  image: images.mustache,
-					  x: 0,
-					  y: 0,
-					  width: 50,
-					  height: 50,
-					});
-					var mustacheOwl = new Kinetic.Image({
-					  image: images.mustacheOwl,
-					  x: 0,
-					  y: 0,
-					  width: 70,
-					  height: 70,
-					});
-					var valentine = new Kinetic.Image({
-					  image: images.valentine,
-					  x: 0,
-					  y: 0,
-					  width: 100,
-					  height: 100,
-					});
-					var framesPic = new Kinetic.Image({
-					  image: images.frames,
-					  x: 0,
-					  y: 0,
-					  width: 309,
-					  height: 330,
-					});
-
-						/* draggable yellow and blue group locations */
-					  var yellowGroup = new Kinetic.Group({
-						x: 50,
-						y: 80,
-						draggable: true
-					  });
-					  var blueGroup = new Kinetic.Group({
-						x: 200,
-						y: 80,
-						draggable: true
-					  });
-					  var amebaGroup = new Kinetic.Group({
-						x: 115,
-						y: 70,
-						draggable: true
-					  });
+				
 					  var glassesGroup = new Kinetic.Group({
-						x: 50,
-						y: 130,
-						draggable: true
+						x: 20,
+						y: 20,
 					  });
 					  var emojiGroup = new Kinetic.Group({
-						x: 80,
-						y: 130,
-						draggable: true
+						x: 20,
+						y: 20,
 					  });
 					  var textGroup = new Kinetic.Group({
-						x: 150,
-						y: 130,
-						draggable: true
+						x: 20,
+						y: 20,
 					  });
 					  var framesGroup = new Kinetic.Group({
 						  x: 0,
 						  y: 0,
 					  });
+					  var shareGroup = new Kinetic.Group({
+						  x: 20,
+						  y: 20,
+					  });
+
 					  var hiddenGroup = new Kinetic.Group({
 						  x: 0,
 						  y: 0,
 					  });
 					  
 					  
-					  
-					  /* blue circle > yellow circle > red box */
-					  var box = new Kinetic.Rect({
-						x: 20,
-						y: 20,
-						width: 30,
-						height: 30,
-						fill: 'red',
-						stroke: 'black'
-					  });
-					  var yellowCircle = new Kinetic.Circle({
-						x: 00,
-						y: 00,
-						radius: 20,
-						fill: 'yellow',
-						stroke: 'black'
-					  });
-					  var blueCircle = new Kinetic.Circle({
-						x: 0,
-						y: 0,
-						radius: 20,
-						fill: 'blue',
-						stroke: 'black'
-					  });
-					  
+					 
 					  /* build node tree (add shapes to groups) */
 
 					  
 					  layer.add(framesGroup);
-					  layer.add(yellowGroup);
-					  layer.add(blueGroup);
 					  layer.add(glassesGroup);
 					  layer.add(emojiGroup);
 					  layer.add(textGroup);
-					  layer.add(amebaGroup);
+					  layer.add(shareGroup);
 					  hiddenLayer.add(hiddenGroup);
 					  
 					  stage.add(hiddenLayer);
@@ -288,12 +253,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						
 						if (document.getElementById('frames').value == "on"){
 							document.getElementById('frames').value = "off";
-							framesPic.moveTo(hiddenGroup);
+							Kimages.frames.moveTo(hiddenGroup);
 							layer.draw();
 					  	}
 						else {
 							document.getElementById('frames').value = "on";
-							framesPic.moveTo(framesGroup);
+							Kimages.frames.moveTo(framesGroup);
 							layer.draw();
 					  	}
 					  }, false);
@@ -303,76 +268,90 @@ along with this program.  If not, see <http://www.gnu.org/licenses/> -->
 						
 						if (document.getElementById('glasses').value == "on"){
 							document.getElementById('glasses').value = "off";
-							mustache.moveTo(hiddenGroup);
+							Kimages.mustache.moveTo(hiddenGroup);
+							Kimages.mustachesBySavchenko1.moveTo(hiddenGroup);
+							Kimages.mustachesBySavchenko5.moveTo(hiddenGroup);
+							Kimages.mustachesBySavchenko7.moveTo(hiddenGroup);
+							Kimages.mustachesBySavchenko8.moveTo(hiddenGroup);
 							layer.draw();
 					  	}
 						else {
 							document.getElementById('glasses').value = "on";
-							mustache.moveTo(glassesGroup);
+							Kimages.mustache.moveTo(glassesGroup);
+							Kimages.mustachesBySavchenko1.moveTo(glassesGroup);
+							Kimages.mustachesBySavchenko5.moveTo(glassesGroup);
+							Kimages.mustachesBySavchenko7.moveTo(glassesGroup);
+							Kimages.mustachesBySavchenko8.moveTo(glassesGroup);
 							layer.draw();
 					  	}
 					  }, false);
-					  document.getElementById('emoji').addEventListener('click',function(emoji) {
-						/*framesPic.moveTo(framesGroup);
-						layer.draw();*/
-						
-						if (document.getElementById('emoji').value == "on"){
-							document.getElementById('emoji').value = "off";
-							ameba.moveTo(hiddenGroup);
-							mustacheOwl.moveTo(hiddenGroup);
-							layer.draw();
-					  	}
-						else {
-							document.getElementById('emoji').value = "on";
-							ameba.moveTo(amebaGroup);
-							mustacheOwl.moveTo(emojiGroup);
-							layer.draw();
-					  	}
-					  }, false);
+	
 					  document.getElementById('textOff').addEventListener('click',function(textOff) {
 						/*framesPic.moveTo(framesGroup);
 						layer.draw();*/
 						
 						if (document.getElementById('textOff').value == "on"){
 							document.getElementById('textOff').value = "off";
-							valentine.moveTo(hiddenGroup);
+							Kimages.valentine.moveTo(hiddenGroup);
 							layer.draw();
 					  	}
 						else {
 							document.getElementById('textOff').value = "on";
-							valentine.moveTo(textGroup);
+							Kimages.valentine.moveTo(textGroup);
 							layer.draw();
 					  	}
 					  }, false);
-					 
+					  
+					  
 					  document.getElementById('share').addEventListener('click',function(share) {
-						/*framesPic.moveTo(framesGroup);
-						layer.draw();*/
 						
 						if (document.getElementById('share').value == "on"){
 							document.getElementById('share').value = "off";
-							yellowCircle.moveTo(hiddenGroup);
-							blueCircle.moveTo(hiddenGroup);
+							Kimages.glassesByOcal.moveTo(hiddenGroup);
 							layer.draw();
 					  	}
 						else {
 							document.getElementById('share').value = "on";
-							yellowCircle.moveTo(yellowGroup);
-							blueCircle.moveTo(blueGroup);
+							Kimages.glassesByOcal.moveTo(shareGroup);
+							layer.draw();
+					  	}
+					  }, false);
+					  
+					  document.getElementById('emoji').addEventListener('click',function(emoji) {
+						/*framesPic.moveTo(framesGroup);
+						layer.draw();*/
+						
+						if (document.getElementById('emoji').value == "on"){
+							document.getElementById('emoji').value = "off";
+							Kimages.emojiByOcal.moveTo(hiddenGroup);
+							layer.draw();
+					  	}
+						else {
+							document.getElementById('emoji').value = "on";
+							Kimages.emojiByOcal.moveTo(emojiGroup);
 							layer.draw();
 					  	}
 					  }, false);
 					  
 					}
 	
-					/*global avriables */
-					framesToggle = 0; //no frame added to frameGroup
+					/*all pictures are in the public domain or defined by a creative commons license
+					that allows distribution, modification, even for commercial purposes
+					when  the artist is known his/her name is in the source filename*/
 					var sources = {
-					ameba: 'pics/stickers/ameba.gif',
 					frames: 'pics/frames/frame00.png',
-					mustache: 'pics/stickers/mustache.png',
+					mustache: 'pics/stickers/mustaches1.png',
 					valentine: 'pics/stickers/valentine.png',
-					mustacheOwl: 'pics/stickers/mustacheOwl.png',
+					mustachesBySavchenko1: 'pics/stickers/mustachesBySavchenko1.png',
+					mustachesBySavchenko2: 'pics/stickers/mustachesBySavchenko2.png',
+					mustachesBySavchenko3: 'pics/stickers/mustachesBySavchenko3.png',
+					mustachesBySavchenko4: 'pics/stickers/mustachesBySavchenko4.png',
+					mustachesBySavchenko5: 'pics/stickers/mustachesBySavchenko5.png',
+					mustachesBySavchenko6: 'pics/stickers/mustachesBySavchenko6.png',
+					mustachesBySavchenko7: 'pics/stickers/mustachesBySavchenko7.png',
+					mustachesBySavchenko8: 'pics/stickers/mustachesBySavchenko8.png',
+					emojiByOcal: 'pics/stickers/emojiByOcal.png',
+					glassesByOcal: 'pics/stickers/glassesByOcal.png'
 					};
 				
 					loadImages(sources, initStage);
